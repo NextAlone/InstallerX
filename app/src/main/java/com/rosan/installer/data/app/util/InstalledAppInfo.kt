@@ -13,7 +13,8 @@ data class InstalledAppInfo(
     val icon: Drawable?,
     val label: String,
     val versionCode: Long,
-    val versionName: String
+    val versionName: String,
+    val lastUpdateTime: Long
 ) {
     companion object : KoinComponent {
         fun buildByPackageName(packageName: String): InstalledAppInfo? {
@@ -37,7 +38,8 @@ data class InstalledAppInfo(
                 icon = applicationInfo?.loadIcon(packageManager),
                 label = applicationInfo?.loadLabel(packageManager)?.toString() ?: "",
                 versionCode = packageInfo.compatVersionCode,
-                versionName = packageInfo.versionName
+                versionName = packageInfo.versionName,
+                lastUpdateTime = packageInfo.lastUpdateTime
             )
         }
     }
