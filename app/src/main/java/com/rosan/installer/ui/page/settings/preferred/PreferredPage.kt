@@ -81,8 +81,8 @@ fun PreferredPage(
             item { DefaultInstaller(snackBarHostState, false) }
             item { ClearCache() }
             item { LabelWidget(label = stringResource(id = R.string.more)) }
-            item { UserTerms() }
-            item { PrivacyPolicy() }
+//            item { UserTerms() }
+//            item { PrivacyPolicy() }
         }
     }
 }

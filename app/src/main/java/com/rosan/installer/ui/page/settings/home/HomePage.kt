@@ -52,12 +52,12 @@ fun HomePage(
             item {
                 StatusWidget()
             }
-            item {
-                DonateWidget()
-            }
-            item {
-                DiscussWidget()
-            }
+//            item {
+//                DonateWidget()
+//            }
+//            item {
+//                DiscussWidget()
+//            }
         }
     }
 }
