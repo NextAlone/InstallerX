@@ -5,17 +5,19 @@ import java.util.*
 plugins {
     alias(libs.plugins.agp.app)
     alias(libs.plugins.kotlin)
-    id("kotlin-kapt")
+    alias(libs.plugins.compose.compiler)
     id("kotlinx-serialization")
+    id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
-val keystoreProps = Properties().apply {
-    load(FileInputStream(rootProject.file("keystore/r0s.properties")))
-}
+ val keystoreProps = Properties().apply {
+     load(FileInputStream(rootProject.file("keystore/r0s.properties")))
+ }
 
-@Suppress("UnstableApiUsage")
+//@Suppress("UnstableApiUsage")
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         // 你如果根据InstallerX的源码进行打包成apk或其他安装包格式
@@ -25,7 +27,7 @@ android {
         applicationId = "com.rosan.installer.x"
         namespace = "com.rosan.installer"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 26
         versionName = "1.7"
 
@@ -33,39 +35,39 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                compilerArgumentProviders(
-                    RoomSchemaArgProvider(File(projectDir, "schemas"))
-                )
-            }
-        }
+//
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                compilerArgumentProviders(
+//                    RoomSchemaArgProvider(File(projectDir, "schemas"))
+//                )
+//            }
+//        }
     }
 
-    signingConfigs {
-        getByName("debug") {
-            keyAlias = keystoreProps.getProperty("keyAlias")
-            keyPassword = keystoreProps.getProperty("keyPassword")
-            storeFile = file(keystoreProps.getProperty("storeFile"))
-            storePassword = keystoreProps.getProperty("storePassword")
-            enableV1Signing = true
-            enableV2Signing = true
-        }
+     signingConfigs {
+         getByName("debug") {
+             keyAlias = keystoreProps.getProperty("keyAlias")
+             keyPassword = keystoreProps.getProperty("keyPassword")
+             storeFile = file(keystoreProps.getProperty("storeFile"))
+             storePassword = keystoreProps.getProperty("storePassword")
+             enableV1Signing = true
+             enableV2Signing = true
+         }
 
-        create("release") {
-            keyAlias = keystoreProps.getProperty("keyAlias")
-            keyPassword = keystoreProps.getProperty("keyPassword")
-            storeFile = file(keystoreProps.getProperty("storeFile"))
-            storePassword = keystoreProps.getProperty("storePassword")
-            enableV1Signing = true
-            enableV2Signing = true
-        }
-    }
+         create("release") {
+             keyAlias = keystoreProps.getProperty("keyAlias")
+             keyPassword = keystoreProps.getProperty("keyPassword")
+             storeFile = file(keystoreProps.getProperty("storeFile"))
+             storePassword = keystoreProps.getProperty("storePassword")
+             enableV1Signing = true
+             enableV2Signing = true
+         }
+     }
 
     buildTypes {
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
+             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -74,7 +76,7 @@ android {
         }
 
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
+             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -86,14 +88,14 @@ android {
     flavorDimensions += "level"
 
     productFlavors {
-        create("unstable") {
-            dimension = "level"
-            isDefault = true
-        }
-
-        create("preview") {
-            dimension = "level"
-        }
+//        create("unstable") {
+//            dimension = "level"
+//            isDefault = true
+//        }
+//
+//        create("preview") {
+//            dimension = "level"
+//        }
 
         create("stable") {
             dimension = "level"
@@ -125,14 +127,18 @@ android {
         aidl = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion = libs.versions.kotlin.get()
+//    }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
+    }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -162,7 +168,7 @@ dependencies {
     implementation(libs.compose.materialIcons)
 
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
     implementation(libs.work.runtime.ktx)
@@ -177,7 +183,7 @@ dependencies {
 
     implementation(libs.lottie.compose)
 
-    implementation(libs.accompanist.navigationAnimation)
+//    implementation(libs.accompanist.navigationAnimation)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.accompanist.drawablepainter)
     implementation(libs.accompanist.systemuicontroller)

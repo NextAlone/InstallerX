@@ -42,14 +42,6 @@ import kotlinx.coroutines.launch
 @OptIn(DelicateCoroutinesApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun MainPage(navController: NavController) {
-    val pagerState = rememberPagerState()
-    val currentPage = pagerState.currentPage
-    fun onPageChanged(page: Int) {
-        GlobalScope.launch(Dispatchers.Main) {
-            pagerState.scrollToPage(page = page)
-        }
-    }
-
     val data = arrayOf(
         NavigationData(
             icon = Icons.TwoTone.Home,
@@ -70,6 +62,16 @@ fun MainPage(navController: NavController) {
             PreferredPage(navController, it)
         }
     )
+
+    val pagerState = rememberPagerState(pageCount = { data.size })
+    val currentPage = pagerState.currentPage
+    fun onPageChanged(page: Int) {
+        GlobalScope.launch(Dispatchers.Main) {
+            pagerState.scrollToPage(page = page)
+        }
+    }
+
+
 
     BoxWithConstraints(
         modifier = Modifier
@@ -106,7 +108,6 @@ fun MainPage(navController: NavController) {
                     .fillMaxSize()
             ) {
                 HorizontalPager(
-                    pageCount = data.size,
                     state = pagerState,
                     userScrollEnabled = false,
                     modifier = Modifier
