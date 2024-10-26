@@ -1,3 +1,4 @@
+import com.android.build.api.variant.FilterConfiguration
 import java.io.FileInputStream
 import java.util.*
 
@@ -24,12 +25,12 @@ android {
         // 请换一个applicationId，不要和官方的任何发布版本产生冲突。
         // If you use InstallerX source code, package it into apk or other installation package format
         // Please change the applicationId to one that does not conflict with any official release.
-        applicationId = "com.rosan.installer.x"
+        applicationId = "xyz.nextalone.installer.x"
         namespace = "com.rosan.installer"
         minSdk = 21
         targetSdk = 34
-        versionCode = 26
-        versionName = "1.7"
+        versionCode = 1
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -110,6 +111,14 @@ android {
             else -> 0
         }.toString()
         buildConfigField("int", "BUILD_LEVEL", level)
+
+        applicationVariants.all {
+            outputs.all {
+                val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
+                val outputFileName = "InstallerX-${defaultConfig.versionName}-${defaultConfig.versionCode}.apk"
+                output?.outputFileName = outputFileName
+            }
+        }
     }
 
     compileOptions {

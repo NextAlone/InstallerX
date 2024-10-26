@@ -74,7 +74,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.rosan.installer.data.installer.model.impl.InstallerService" />
+        <service android:name="com.rosan.installer.data.installer.model.impl.InstallerService"
+            android:foregroundServiceType="shortService"/>
 
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
