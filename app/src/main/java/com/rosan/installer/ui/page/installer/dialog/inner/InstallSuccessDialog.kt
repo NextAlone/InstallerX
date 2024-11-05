@@ -34,7 +34,8 @@ fun InstallSuccessDialog(
         val list = mutableListOf<DialogButton>()
         val intent = context.packageManager.getLaunchIntentForPackage(packageName)
         if (intent != null) list.add(DialogButton(stringResource(R.string.open)) {
-            context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            val activity = intent.component?.className
+            Runtime.getRuntime().exec("su -c am start -n $packageName/$activity")
             viewModel.dispatch(DialogViewAction.Close)
         })
         list.addAll(DialogButton(stringResource(R.string.previous), 1f) {
